@@ -42,3 +42,11 @@ The three P0 tools (`search_notes`, `get_note`, and `create_note`) will be fully
 
 2. **Maintaining consistent data across tools.** Different tools must use the same note identifier and output structure.
    **Mitigation:** Reuse common field names such as `note_id` and `file` in all schemas and tool responses.
+
+## Notes from reading Official MCP Server Examples
+
+- Tool names are usually action-based and clear, such as search, get, list, and create.
+- Tool descriptions are short and explain exactly what the tool does.
+- Input fields use meaningful names and include validation rules.
+- Errors should provide clear information about what went wrong.
+- Tools should have a single responsibility instead of combining many actions together.
