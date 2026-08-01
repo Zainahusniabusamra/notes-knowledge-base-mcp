@@ -1,33 +1,17 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
+import { registerSearchNotes } from "./tools/searchNotes.js";
+import { registerGetNote } from "./tools/getNote.js";
+import { registerCreateNote } from "./tools/createNote.js";
 
 const server = new McpServer({
-  name: "my-first-mcp",
+  name: "notes-knowledge-base-mcp",
   version: "0.1.0",
 });
-
-server.registerTool(
-  "greet",
-  {
-    title: "Greet",
-    description: "Say hello to someone by name",
-    inputSchema: z.object({
-      name: z.string().describe("The person's name to greet"),
-    }),
-  },
-  async ({ name }) => {
-    return {
-      content: [
-        {
-          type: "text",
-          text: `Hello, ${name}!`,
-        },
-      ],
-    };
-  }
-);
-
+registerSearchNotes(server);
+registerGetNote(server);
+registerCreateNote(server);
 const transport = new StdioServerTransport();
 
 await server.connect(transport);
+
