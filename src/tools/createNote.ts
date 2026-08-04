@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { createNoteInputSchema } from "../schemas/createNoteSchema.js";
+import { createNote } from "../lib/notes.js";
 
 export function registerCreateNote(server: McpServer) {
   server.registerTool(
@@ -10,25 +11,36 @@ export function registerCreateNote(server: McpServer) {
       inputSchema: createNoteInputSchema,
     },
     async ({ title, content, tags }) => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
-              {
-                ok: true,
-                stub: true,
-                tool: "create_note",
-                title,
-                content,
-                tags,
-              },
-              null,
-              2
-            ),
-          },
-        ],
-      };
+      try {
+        const note = await createNote(title, content);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                {
+                  ...note,
+                  tags,
+                },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Error creating note: ${
+                error instanceof Error ? error.message : "Unknown error"
+              }`,
+            },
+          ],
+        };
+      }
     }
   );
 }

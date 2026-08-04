@@ -1,0 +1,1 @@
+MCP allows AI assistants to use external tools and data.

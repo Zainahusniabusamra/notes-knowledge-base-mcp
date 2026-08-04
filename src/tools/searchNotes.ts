@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { searchNotesInputSchema } from "../schemas/searchNotesSchema.js";
+import { searchNotes } from "../lib/notes.js";
 
 export function registerSearchNotes(server: McpServer) {
   server.registerTool(
@@ -10,24 +11,35 @@ export function registerSearchNotes(server: McpServer) {
       inputSchema: searchNotesInputSchema,
     },
     async ({ query, limit }) => {
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(
-              {
-                ok: true,
-                stub: true,
-                tool: "search_notes",
-                query,
-                limit,
-              },
-              null,
-              2
-            ),
-          },
-        ],
-      };
+      try {
+        const results = await searchNotes(query, limit);
+
+        return {
+          content: [
+            {
+              type: "text",
+              text: JSON.stringify(
+                {
+                  results,
+                },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      } catch (error) {
+        return {
+          content: [
+            {
+              type: "text",
+              text: `Error searching notes: ${
+                error instanceof Error ? error.message : "Unknown error"
+              }`,
+            },
+          ],
+        };
+      }
     }
   );
 }
