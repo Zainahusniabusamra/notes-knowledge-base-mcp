@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { registerSearchNotes } from "./tools/searchNotes.js";
 import { registerGetNote } from "./tools/getNote.js";
 import { registerCreateNote } from "./tools/createNote.js";
+import { registerAiNotesResource } from "./resources/aiNotesResource.js";
 
 const server = new McpServer({
   name: "notes-knowledge-base-mcp",
@@ -11,6 +12,7 @@ const server = new McpServer({
 registerSearchNotes(server);
 registerGetNote(server);
 registerCreateNote(server);
+registerAiNotesResource(server);
 const transport = new StdioServerTransport();
 
 await server.connect(transport);
