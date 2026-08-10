@@ -36,3 +36,11 @@
 * Add consistent timeout handling for network requests.
 * Review secrets and `.env` handling.
 * Improve error messages and avoid leaking internal information.
+
+
+
+## Out of Scope
+
+- Authentication and authorization are out of scope because this student project runs locally and does not expose a public service.
+- Protection against a compromised operating system or malicious local users is out of scope.
+- Production-grade network security is out of scope because the current project does not require external APIs or network access.
