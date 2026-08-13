@@ -4,6 +4,7 @@ import * as z from "zod/v4";
 export const searchNotesInputSchema = z.object({
   query: z
     .string()
+    .trim()
     .min(1)
     .max(200)
     .describe("Search text to look for across notes"),
