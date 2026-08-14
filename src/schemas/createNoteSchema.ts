@@ -1,20 +1,26 @@
 import * as z from "zod/v4";
 
-// Tool: create_note
 export const createNoteInputSchema = z.object({
   title: z
     .string()
+    .trim()
     .min(1)
-    .max(200)
-    .describe("Title of the new note"),
+    .max(200),
 
   content: z
     .string()
+    .trim()
     .min(1)
-    .describe("Content/body of the note"),
+    .max(10000),
 
   tags: z
-    .array(z.string())
-    .optional()
-    .describe("Optional tags for organizing the note"),
+    .array(
+      z
+        .string()
+        .trim()
+        .min(1)
+        .max(50)
+    )
+    .max(10)
+    .optional(),
 });

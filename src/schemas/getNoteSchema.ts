@@ -4,6 +4,8 @@ import * as z from "zod/v4";
 export const getNoteInputSchema = z.object({
   note_id: z
     .string()
+    .trim()
     .min(1)
+    .max(255)
     .describe("Identifier or file path of the note to retrieve"),
 });

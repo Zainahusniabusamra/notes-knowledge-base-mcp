@@ -2,6 +2,22 @@ import fs from "fs/promises";
 import path from "path";
 
 const DATA_DIR = path.resolve("data");
+const DATA_PREFIX = DATA_DIR + path.sep;
+
+const MAX_NOTE_CONTENT = 5000;
+
+function resolveSafeDataPath(fileName: string): string {
+  const resolvedPath = path.resolve(DATA_DIR, fileName);
+
+  if (
+    resolvedPath !== DATA_DIR &&
+    !resolvedPath.startsWith(DATA_PREFIX)
+  ) {
+    throw new Error("Invalid note path");
+  }
+
+  return resolvedPath;
+}
 
 export async function loadNotes() {
   const files = await fs.readdir(DATA_DIR);
@@ -10,15 +26,20 @@ export async function loadNotes() {
     files
       .filter((file) => file.endsWith(".md"))
       .map(async (file) => {
-        const content = await fs.readFile(
-          path.join(DATA_DIR, file),
-          "utf-8"
-        );
+        const filePath = resolveSafeDataPath(file);
+
+        const content = await fs.readFile(filePath, "utf-8");
+
+        const truncated =
+          content.length > MAX_NOTE_CONTENT;
 
         return {
           id: file,
           title: file.replace(".md", ""),
-          content,
+          content: truncated
+            ? content.slice(0, MAX_NOTE_CONTENT) +
+              "\n\n[Content truncated]"
+            : content,
         };
       })
   );
@@ -39,19 +60,31 @@ export async function searchNotes(query: string, limit = 5) {
 }
 
 export async function getNote(noteId: string) {
+  const notePath = resolveSafeDataPath(noteId);
+
+  if (!notePath.endsWith(".md")) {
+    throw new Error("Invalid note path");
+  }
+
   const notes = await loadNotes();
 
-  return notes.find((note) => note.id === noteId);
+  return notes.find(
+    (note) => note.id === path.basename(notePath)
+  );
 }
 
 export async function createNote(
   title: string,
   content: string
 ) {
-  const fileName = `${title.toLowerCase().replaceAll(" ", "-")}.md`;
+  const fileName = `${title
+    .toLowerCase()
+    .replaceAll(" ", "-")}.md`;
+
+  const filePath = resolveSafeDataPath(fileName);
 
   await fs.writeFile(
-    path.join(DATA_DIR, fileName),
+    filePath,
     content,
     "utf-8"
   );
