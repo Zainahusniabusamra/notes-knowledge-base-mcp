@@ -7,24 +7,23 @@ export function registerGetNote(server: McpServer) {
     "get_note",
     {
       title: "Get Note",
-      description: "Retrieve a note by its id or file path",
+      description: "Retrieve a note by its identifier",
       inputSchema: getNoteInputSchema,
     },
     async ({ note_id }) => {
       try {
         const note = await getNote(note_id);
-
         if (!note) {
           return {
             content: [
               {
                 type: "text",
-                text: `Note not found: ${note_id}`,
+                text: "Note not found.",
               },
             ],
+            isError: true,
           };
         }
-
         return {
           content: [
             {
@@ -34,15 +33,17 @@ export function registerGetNote(server: McpServer) {
           ],
         };
       } catch (error) {
+        // Log full details to stderr only — never expose raw errors or
+        // the requested note_id back to the model.
+        console.error("[get_note] failed:", error);
         return {
           content: [
             {
               type: "text",
-              text: `Error getting note: ${
-                error instanceof Error ? error.message : "Unknown error"
-              }`,
+              text: "Unable to retrieve the note. Please check the note identifier and try again.",
             },
           ],
+          isError: true,
         };
       }
     }
