@@ -1,7 +1,11 @@
-node_modules
-dist
+node_modules/
+dist/
 
-.env
-.env.local
+.env*
+!.env.example
+
 *.key
 *.pem
+
+.DS_Store
+Thumbs.db
