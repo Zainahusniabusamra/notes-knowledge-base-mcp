@@ -163,7 +163,6 @@ Check that the note exists inside the `data/` directory and use its exact identi
 ```
 
 If the identifier is invalid or the note does not exist, the server returns a safe error instead of exposing filesystem details.
-
 ## License
 
-This project is licensed under the ISC License.
+This project is licensed under the MIT License.
