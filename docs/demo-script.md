@@ -1,70 +1,85 @@
 # Demo Script — Notes Knowledge Base MCP
 
-## 0:00–0:40 — Problem
+**Total time: 5:00**
 
-Users often have notes stored in local files, but finding specific information across those notes can be slow and inconvenient.
+## 0:00–0:40 — The Problem
 
-The Notes Knowledge Base MCP connects an AI assistant to a local notes folder so the assistant can search, retrieve, and create notes through MCP tools.
+"Most of us keep notes scattered across random Markdown files — for class, for projects, for random ideas — and searching through them means opening file after file by hand.
+
+**Notes Knowledge Base MCP** turns a folder of Markdown notes into a searchable knowledge base that an MCP-compatible AI client like Claude Desktop can query and update directly, in natural language."
 
 ## 0:40–1:10 — Architecture
 
-The project consists of:
+"It's a local MCP server, built in TypeScript, running over the standard MCP stdio transport. It exposes three tools to the client:
 
-- Local Markdown notes stored in the `data/` folder
-- A TypeScript MCP server
-- MCP tools exposed to an AI client
-- MCP Inspector for testing and demonstrating the tools
+* `search_notes` — keyword search across all notes
+* `get_note` — retrieve a specific note by ID
+* `create_note` — create a new Markdown note with title, content, and tags
 
-The main tools are:
+Notes live as plain `.md` files in a `data/` directory — no database, no external services."
 
-1. `search_notes`
-2. `get_note`
-3. `create_note`
+**Architecture:**
 
-## 1:10–3:30 — Live Demo
+`Claude Desktop ⇄ MCP stdio ⇄ TypeScript MCP Server ⇄ data/*.md`
+
+## 1:10–3:30 — Live Tool Calls
+
+Two prompts that always work, based on `examples/conversations.md`:
 
 ### Prompt 1 — Search
 
-> What do I have in my notes about photosynthesis?
+> Search my notes for photosynthesis.
 
-Expected tool:
+**Expected tool:** `search_notes`
 
-`search_notes`
+Show Claude calling `search_notes` and returning the matching `biology.md` note.
 
-The server searches the notes and returns the matching `biology.md` note.
+### Prompt 2 — Create
 
-### Prompt 2 — Retrieve
+> Create a note titled "Exam Reminder" with the content "Review mitosis before the exam".
 
-> Show me my biology note.
+**Expected tool:** `create_note`
 
-Expected tool:
+Show Claude creating the new Markdown note and confirm that the new file appears in the `data/` directory.
 
-`get_note`
+### Backup Prompt — Retrieve
 
-The server retrieves `biology.md` and returns its content.
+> Retrieve my biology note.
 
-### Backup Prompt — Create
+**Expected tool:** `get_note`
 
-> Create a note called "Exam Reminder" and remind me to review mitosis before the exam.
-
-Expected tool:
-
-`create_note`
-
-The server creates a new Markdown note with the requested content.
+The tool retrieves `biology.md` and returns its content.
 
 ## 3:30–4:30 — What I Would Build Next
 
-Next, I would add:
+"Right now the project is local-only and uses keyword search. Next steps I'd want to build:
 
-- Better note filtering and tagging
-- More advanced search
-- Note editing and deletion
-- More robust validation and error handling
-- Integration with an AI client for a complete end-to-end workflow
+* Semantic search using embeddings instead of plain keyword matching
+* Tagging and filtering in `search_notes`
+* Note editing and deletion
+* A remote-hosted version that works directly with claude.ai
+
+"
 
 ## 4:30–5:00 — Questions
 
-The project is shipped as version `v1.0.0` and is available as a public GitHub repository.
+"Happy to answer anything about the architecture, MCP tools, validation rules, testing, or future improvements."
 
-I am ready for questions about the architecture, MCP tools, testing, and future improvements.
+---
+
+## Slide Plan
+
+Five slides maximum:
+
+1. **Title** — Notes Knowledge Base MCP / Zaina Abusamra
+2. **Problem** — Scattered notes and difficult manual searching
+3. **Architecture** — Claude Desktop ⇄ MCP stdio ⇄ TypeScript server ⇄ `data/*.md`
+4. **Tools** — `search_notes`, `get_note`, and `create_note`
+5. **Next Steps** — Semantic search, tags, editing/deletion, and remote hosting
+
+---
+
+## Offline Backup Plan
+
+"If Wi-Fi fails, the MCP server is local and does not depend on an external service during the demo. Keep Claude Desktop connected before Demo Day and keep a terminal window ready with `npm run dev` as a fallback to verify that 
+ server still runs."
