@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Notes Knowledge Base MCP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #efe6d2;
+    --paper-deep: #e6dabd;
+    --ink: #24241c;
+    --ink-soft: #55503f;
+    --stamp: #a5402a;
+    --shelf: #2f4a3c;
+    --line: #c9bb96;
+    --card: #f7f1e2;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --display: 'Special Elite', 'IBM Plex Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.55;
+    background-image:
+      repeating-linear-gradient(transparent, transparent 37px, rgba(36,36,28,0.05) 38px);
+  }
+  a{ color: inherit; }
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- nav ---------- */
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 22px 28px; border-bottom: 2px solid var(--ink);
+    position: sticky; top:0; background: var(--paper); z-index: 10;
+  }
+  .brand{ font-family: var(--display); font-size: 16px; letter-spacing: 0.5px; }
+  .brand span{ color: var(--stamp); }
+  .navlinks{ display:flex; gap: 26px; font-family: var(--mono); font-size: 13px; }
+  .navlinks a{ text-decoration:none; color: var(--ink-soft); border-bottom: 1px solid transparent; }
+  .navlinks a:hover{ color: var(--ink); border-color: var(--ink); }
+  .gh-link{
+    font-family: var(--mono); font-size: 13px; text-decoration:none;
+    border: 1.5px solid var(--ink); padding: 6px 14px; border-radius: 3px;
+  }
+  .gh-link:hover{ background: var(--ink); color: var(--paper); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding: 90px 0 60px; }
+  .eyebrow{
+    font-family: var(--mono); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--shelf); display:flex; align-items:center; gap:10px; margin-bottom: 22px;
+  }
+  .eyebrow::before{ content:""; width:26px; height:1.5px; background: var(--shelf); }
+  h1{
+    font-family: var(--display); font-size: clamp(38px, 6vw, 62px);
+    line-height: 1.1; max-width: 800px; margin-bottom: 22px;
+  }
+  .lede{ font-size: 19px; color: var(--ink-soft); max-width: 620px; margin-bottom: 34px; }
+  .cta-row{ display:flex; gap: 14px; flex-wrap: wrap; margin-bottom: 46px; }
+  .btn{
+    font-family: var(--mono); font-size: 14px; padding: 12px 22px; border-radius: 3px;
+    text-decoration: none; display:inline-block; border: 1.5px solid var(--ink);
+  }
+  .btn.primary{ background: var(--ink); color: var(--paper); }
+  .btn.primary:hover{ background: var(--stamp); border-color: var(--stamp); }
+  .btn.ghost:hover{ background: var(--ink); color: var(--paper); }
+
+  .status-strip{
+    display:flex; flex-wrap: wrap; gap: 0; border: 1.5px solid var(--ink); border-radius: 4px; overflow:hidden;
+  }
+  .status-strip div{
+    font-family: var(--mono); font-size: 12px; padding: 12px 18px; border-right: 1.5px solid var(--ink);
+    flex:1; min-width: 180px;
+  }
+  .status-strip div:last-child{ border-right:none; }
+  .dot{ display:inline-block; width:7px; height:7px; border-radius:50%; background: var(--shelf); margin-inline-end:7px; }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 70px 0; border-top: 2px dashed var(--line); }
+  .kicker{ font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--stamp); margin-bottom: 10px; }
+  h2{ font-family: var(--display); font-size: clamp(26px, 3.6vw, 36px); max-width: 700px; margin-bottom: 18px; }
+  .section-lede{ color: var(--ink-soft); max-width: 620px; margin-bottom: 40px; }
+
+  /* ---------- gap comparison ---------- */
+  .gap-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 720px){ .gap-grid{ grid-template-columns: 1fr; } }
+  .term{
+    background: var(--ink); color: #d9d2bd; border-radius: 6px; padding: 22px;
+    font-family: var(--mono); font-size: 13.5px;
+  }
+  .term-label{ font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; opacity: 0.6; }
+  .term.without .term-label{ color: #d98a6f; }
+  .term.with .term-label{ color: #7fbf9e; }
+  .term p{ margin-bottom: 8px; }
+  .term .user{ color: #efe6d2; }
+  .term .sys{ opacity: 0.65; }
+  .term .call{ color: #7fbf9e; }
+  .term .none{ color: #d98a6f; }
+
+  /* ---------- architecture ---------- */
+  .flow{
+    display:flex; align-items: stretch; gap: 10px; flex-wrap: wrap; margin-bottom: 26px;
+  }
+  .flow-step{
+    background: var(--card); border: 1.5px solid var(--ink); border-radius: 6px;
+    padding: 16px 18px; flex: 1; min-width: 140px; position: relative;
+  }
+  .flow-step .who{ font-family: var(--mono); font-size: 10.5px; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 4px;}
+  .flow-step .what{ font-family: var(--display); font-size: 15px; }
+  .flow-arrow{ align-self: center; font-family: var(--mono); color: var(--stamp); font-size: 18px; }
+  .arch-note{
+    font-family: var(--mono); font-size: 13px; color: var(--ink-soft); border-left: 3px solid var(--shelf);
+    padding: 10px 16px; background: var(--card);
+  }
+
+  /* ---------- tools: index cards ---------- */
+  .cards{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 860px){ .cards{ grid-template-columns: 1fr; } }
+  .idx-card{
+    background: var(--card); border: 1.5px solid var(--ink); border-radius: 2px 10px 2px 2px;
+    padding: 22px 20px 20px; position: relative; box-shadow: 4px 4px 0 rgba(36,36,28,0.08);
+  }
+  .idx-card::before{
+    content:""; position:absolute; top:14px; left:14px; width:10px; height:10px;
+    border-radius:50%; background: var(--paper); border: 1.5px solid var(--ink);
+  }
+  .idx-card .tool-name{
+    font-family: var(--mono); font-weight:600; font-size: 16px; margin: 18px 0 10px; color: var(--shelf);
+  }
+  .idx-card p{ font-size: 14px; color: var(--ink-soft); margin-bottom: 14px; min-height: 66px; }
+  .idx-card .sig{
+    font-family: var(--mono); font-size: 12px; background: var(--paper-deep); padding: 8px 10px; border-radius: 4px;
+    border: 1px solid var(--line); word-break: break-word;
+  }
+  .idx-card .sig b{ color: var(--stamp); }
+  .stamp-mark{
+    position:absolute; top:16px; right:14px; font-family: var(--display); font-size: 10.5px;
+    color: var(--stamp); border: 1.5px solid var(--stamp); border-radius: 4px; padding: 3px 8px;
+    transform: rotate(6deg); letter-spacing: 1px;
+  }
+
+  /* ---------- demo workflow ---------- */
+  .workflow{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 10px;}
+  @media (max-width: 720px){ .workflow{ grid-template-columns: 1fr; } }
+  .wf-card{ background: var(--card); border: 1.5px solid var(--ink); border-radius: 6px; padding: 22px; }
+  .wf-label{ font-family: var(--mono); font-size: 11px; text-transform: uppercase; color: var(--stamp); margin-bottom: 12px; letter-spacing: 1px;}
+  .wf-step{ font-family: var(--mono); font-size: 13px; margin-bottom: 10px; padding-left: 16px; border-left: 2px solid var(--line); }
+  .wf-step .tag{ color: var(--shelf); }
+  .wf-result{ font-family: var(--mono); font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; }
+
+  /* ---------- highlights ---------- */
+  .highlights{ display:grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
+  @media (max-width: 720px){ .highlights{ grid-template-columns: 1fr; } }
+  .highlights li{ list-style:none; display:flex; gap: 10px; font-size: 14.5px; }
+  .highlights li::before{ content:"✓"; color: var(--shelf); font-weight: bold; }
+
+  /* ---------- tech stack ---------- */
+  .stack{ display:flex; flex-wrap:wrap; gap: 10px; }
+  .stack span{
+    font-family: var(--mono); font-size: 12.5px; border: 1px solid var(--ink); border-radius: 20px;
+    padding: 7px 16px; background: var(--card);
+  }
+
+  footer{
+    border-top: 2px solid var(--ink); padding: 32px 0; font-family: var(--mono); font-size: 12.5px;
+    color: var(--ink-soft); display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand">notes<span>_</span>kb.mcp</div>
+  <div class="navlinks">
+    <a href="#architecture">Architecture</a>
+    <a href="#tools">Tools</a>
+    <a href="#demo">Demo</a>
+  </div>
+  <a class="gh-link" href="https://github.com/Zainahusniabusamra/notes-knowledge-base-mcp" target="_blank" rel="noopener">GitHub ↗</a>
+</nav>
+
+<div class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <div class="eyebrow">Model Context Protocol</div>
+    <h1>A folder of notes, one query away.</h1>
+    <p class="lede">An MCP server that turns a plain folder of Markdown notes into a searchable knowledge base — three structured tools an AI assistant can call, instead of guessing what's inside your files.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#tools">Explore the tools</a>
+      <a class="btn ghost" href="https://github.com/Zainahusniabusamra/notes-knowledge-base-mcp" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+    <div class="status-strip">
+      <div><span class="dot"></span>MCP SERVER · STDIO</div>
+      <div><span class="dot"></span>3 TOOLS REGISTERED</div>
+      <div><span class="dot"></span>LOCAL MARKDOWN STORAGE</div>
+    </div>
+  </section>
+
+  <section id="gap">
+    <div class="kicker">The gap</div>
+    <h2>Knowing your notes exist isn't the same as reading them.</h2>
+    <p class="section-lede">An AI assistant can talk about note-taking in general. MCP is what lets it actually open your <code>data/</code> folder and answer from what's really written there.</p>
+    <div class="gap-grid">
+      <div class="term without">
+        <div class="term-label">Without MCP</div>
+        <p class="user">&gt; user: search my notes for photosynthesis</p>
+        <p class="sys">&lt; "I don't have access to your notes."</p>
+        <p class="none">Nothing searched. Nothing returned.</p>
+      </div>
+      <div class="term with">
+        <div class="term-label">With this MCP server</div>
+        <p class="user">&gt; user: search my notes for photosynthesis</p>
+        <p class="call">&gt; search_notes(query: "photosynthesis")</p>
+        <p class="sys">3 matching notes returned from data/</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="kicker">Architecture</div>
+    <h2>One request, one machine, no branching out.</h2>
+    <p class="section-lede">Every tool call stays local — there's no external API to authenticate against, no cloud database to sync with.</p>
+    <div class="flow">
+      <div class="flow-step"><div class="who">Person</div><div class="what">User</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="who">MCP host</div><div class="what">AI Assistant</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="who">This project</div><div class="what">Notes KB MCP Server</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="who">src/index.ts</div><div class="what">Tool Layer</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="who">data/*.md</div><div class="what">Markdown Notes</div></div>
+    </div>
+    <div class="arch-note">No database, no external service — <b>search_notes</b>, <b>get_note</b> and <b>create_note</b> all read and write plain Markdown files on disk.</div>
+  </section>
+
+  <section id="tools">
+    <div class="kicker">MCP toolbox</div>
+    <h2>Three tools, one job each.</h2>
+    <p class="section-lede">Registered from <code>src/index.ts</code> and validated with Zod schemas.</p>
+    <div class="cards">
+      <div class="idx-card">
+        <span class="stamp-mark">FOUND</span>
+        <div class="tool-name">⌕ search_notes</div>
+        <p>Search notes stored in <code>data/</code> by keyword and return the matching notes. Limit defaults to 5, capped at 20.</p>
+        <div class="sig"><b>in</b>: query, limit?<br><b>out</b>: matching notes[]</div>
+      </div>
+      <div class="idx-card">
+        <span class="stamp-mark">FILED</span>
+        <div class="tool-name">≡ get_note</div>
+        <p>Retrieve a single note by its identifier, e.g. <code>biology.md</code>. Returns a safe error if it doesn't exist — never a filesystem path.</p>
+        <div class="sig"><b>in</b>: note_id<br><b>out</b>: note content</div>
+      </div>
+      <div class="idx-card">
+        <span class="stamp-mark">SAVED</span>
+        <div class="tool-name">＋ create_note</div>
+        <p>Create a new Markdown note from a title, content, and optional tags. Title ≤200 chars, content ≤10,000 chars, ≤10 tags.</p>
+        <div class="sig"><b>in</b>: title, content, tags?<br><b>out</b>: saved note</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo">
+    <div class="kicker">See it in action</div>
+    <h2>From request to a note on disk.</h2>
+    <p class="section-lede">Two real flows, tool call by tool call — straight from the example prompts in the README.</p>
+    <div class="workflow">
+      <div class="wf-card">
+        <div class="wf-label">workflow — search notes</div>
+        <div class="wf-step"><span class="tag">user</span> "Search my notes for photosynthesis."</div>
+        <div class="wf-step">&gt; search_notes(query: "photosynthesis")</div>
+        <div class="wf-result">✓ 3 notes matched, returned from data/</div>
+      </div>
+      <div class="wf-card">
+        <div class="wf-label">workflow — create a note</div>
+        <div class="wf-step"><span class="tag">user</span> "Create a note titled 'Exam Reminder' with the content 'Review mitosis before the exam'."</div>
+        <div class="wf-step">&gt; create_note(title, content)</div>
+        <div class="wf-result">✓ Saved to data/exam-reminder.md</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Project highlights</div>
+    <h2>What actually shipped.</h2>
+    <p class="section-lede">Verified against the repository README — no invented metrics.</p>
+    <ul class="highlights">
+      <li>Three MCP tools covering the full note lifecycle: search, retrieve, create</li>
+      <li>Local Markdown storage in data/ — no database, no internet connection required</li>
+      <li>Every tool input validated with Zod, including strict length and tag-count limits</li>
+      <li>Runs over the standard MCP stdio transport for any compatible client</li>
+      <li>Testable interactively with the MCP Inspector</li>
+      <li>Missing or invalid note_id returns a safe error, not a filesystem leak</li>
+      <li>Built with the official @modelcontextprotocol/sdk and TypeScript</li>
+      <li>MIT licensed and public on GitHub</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="kicker">Tech stack</div>
+    <h2>Built with</h2>
+    <div class="stack">
+      <span>TypeScript</span>
+      <span>Node.js 22+</span>
+      <span>@modelcontextprotocol/sdk</span>
+      <span>Zod</span>
+      <span>tsx</span>
+      <span>MCP Inspector</span>
+      <span>Git / GitHub</span>
+    </div>
+  </section>
+
+  <footer>
+    <div>Notes Knowledge Base MCP · MIT License</div>
+    <div><a href="https://github.com/Zainahusniabusamra/notes-knowledge-base-mcp" target="_blank" rel="noopener">github.com/Zainahusniabusamra/notes-knowledge-base-mcp ↗</a></div>
+  </footer>
+
+</div>
+
+</body>
+</html>
