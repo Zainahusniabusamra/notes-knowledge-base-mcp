@@ -4,6 +4,12 @@ A local Model Context Protocol (MCP) server that turns a folder of Markdown note
 
 The server provides tools for searching notes, retrieving a specific note, and creating new notes.
 
+## Project Journey
+
+Curious about how this project came to life? Read the full story — from gathering requirements to designing the tools, testing, securing, and shipping the final MCP server:
+
+👉 [Read the full journey blog](docs/blog.md)
+
 ## Requirements
 
 * Node.js 22 or newer
