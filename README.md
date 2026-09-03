@@ -163,6 +163,13 @@ Check that the note exists inside the `data/` directory and use its exact identi
 ```
 
 If the identifier is invalid or the note does not exist, the server returns a safe error instead of exposing filesystem details.
+
+## Built with NextFlows Academy
+
+This project was built as part of the NextFlows Academy — Cohort #1: Building an MCP for an AI Engine.
+
+Academy: https://nextflows.ai/academy
+
 ## License
 
 This project is licensed under the MIT License.
