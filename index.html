@@ -170,6 +170,18 @@
     border-top: 2px solid var(--ink); padding: 32px 0; font-family: var(--mono); font-size: 12.5px;
     color: var(--ink-soft); display:flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
   }
+
+  /* ---------- academy credit ---------- */
+  .academy-card{
+    background: var(--card); border: 1.5px solid var(--ink); border-radius: 6px;
+    padding: 22px 26px; display:flex; align-items:center; gap: 18px; flex-wrap: wrap;
+  }
+  .academy-badge{
+    font-family: var(--display); font-size: 13px; color: var(--paper); background: var(--shelf);
+    padding: 8px 14px; border-radius: 4px; white-space: nowrap;
+  }
+  .academy-text{ font-size: 14px; color: var(--ink-soft); flex: 1; min-width: 220px; }
+  .academy-text a{ color: var(--stamp); text-decoration: underline; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -312,6 +324,14 @@
       <span>tsx</span>
       <span>MCP Inspector</span>
       <span>Git / GitHub</span>
+    </div>
+  </section>
+
+  <section style="border-top: 2px dashed var(--line);">
+    <div class="kicker">Credits</div>
+    <div class="academy-card">
+      <span class="academy-badge">🎓 Built with NextFlows Academy</span>
+      <p class="academy-text">This project was built as part of the <strong>NextFlows Academy</strong> — Cohort #1: Building an MCP for an AI Engine. Learn more at <a href="https://nextflows.ai/academy" target="_blank" rel="noopener">nextflows.ai/academy ↗</a></p>
     </div>
   </section>
 
