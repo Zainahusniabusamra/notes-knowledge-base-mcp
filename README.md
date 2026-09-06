@@ -4,6 +4,12 @@ A local Model Context Protocol (MCP) server that turns a folder of Markdown note
 
 The server provides tools for searching notes, retrieving a specific note, and creating new notes.
 
+## Project Journey
+
+Curious about how this project came to life? Read the full story — from gathering requirements to designing the tools, testing, securing, and shipping the final MCP server:
+
+👉 [Read the full journey blog](docs/blog.md)
+
 ## Requirements
 
 * Node.js 22 or newer
@@ -163,6 +169,13 @@ Check that the note exists inside the `data/` directory and use its exact identi
 ```
 
 If the identifier is invalid or the note does not exist, the server returns a safe error instead of exposing filesystem details.
+
+## Built with NextFlows Academy
+
+This project was built as part of the NextFlows Academy — Cohort #1: Building an MCP for an AI Engine.
+
+Academy: https://nextflows.ai/academy
+
 ## License
 
 This project is licensed under the MIT License.
