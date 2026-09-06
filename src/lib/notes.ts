@@ -95,3 +95,51 @@ export async function createNote(
     content,
   };
 }
+
+
+
+export async function updateNote(
+  noteId: string,
+  content: string
+) {
+  const notePath = resolveSafeDataPath(noteId);
+
+  if (!notePath.endsWith(".md")) {
+    throw new Error("Invalid note path");
+  }
+
+  try {
+    await fs.access(notePath);
+  } catch {
+    return null;
+  }
+
+  await fs.writeFile(notePath, content, "utf-8");
+
+  return {
+    id: path.basename(notePath),
+    title: path.basename(notePath).replace(".md", ""),
+    content,
+  };
+}
+
+
+
+
+export async function deleteNote(noteId: string) {
+  const notePath = resolveSafeDataPath(noteId);
+
+  if (!notePath.endsWith(".md")) {
+    throw new Error("Invalid note path");
+  }
+
+  try {
+    await fs.access(notePath);
+  } catch {
+    return false;
+  }
+
+  await fs.unlink(notePath);
+
+  return true;
+}

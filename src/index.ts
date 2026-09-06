@@ -4,6 +4,9 @@ import { registerSearchNotes } from "./tools/searchNotes.js";
 import { registerGetNote } from "./tools/getNote.js";
 import { registerCreateNote } from "./tools/createNote.js";
 import { registerAiNotesResource } from "./resources/aiNotesResource.js";
+import { registerUpdateNote } from "./tools/updateNote.js";
+import { registerDeleteNote } from "./tools/deleteNote.js";
+
 
 const server = new McpServer({
   name: "notes-knowledge-base-mcp",
@@ -12,6 +15,8 @@ const server = new McpServer({
 registerSearchNotes(server);
 registerGetNote(server);
 registerCreateNote(server);
+registerUpdateNote(server);
+registerDeleteNote(server);
 registerAiNotesResource(server);
 const transport = new StdioServerTransport();
 
